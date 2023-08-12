@@ -47,22 +47,7 @@ function! zig#fmt#Format() abort
     endif
     call setline(1, out)
 
-    " No errors detected, close the loclist.
-    call setloclist(0, [], 'r')
     lclose
-  elseif get(g:, 'zig_fmt_parse_errors', 1)
-    let errors = s:parse_errors(expand('%'), out)
-
-    call setloclist(0, [], 'r', {
-        \ 'title': 'Errors',
-        \ 'items': errors,
-        \ })
-
-    let max_win_height = get(g:, 'zig_fmt_max_window_height', 5)
-    " Prevent the loclist from becoming too long.
-    let win_height = min([max_win_height, len(errors)])
-    " Open the loclist, but only if there's at least one error to show.
-    execute 'silent! lwindow ' . win_height
   endif
 
   call winrestview(view)
